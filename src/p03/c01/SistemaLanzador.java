@@ -12,7 +12,7 @@ public class SistemaLanzador {
 
 			String puerta = "" + ((char) (letra_puerta++));
 
-			// Creación de hilos de entrada
+			// Creacion de hilos de entrada
 			ActividadEntradaPuerta entradas = new ActividadEntradaPuerta(puerta, parque);
 			new Thread(entradas).start();
 

@@ -31,10 +31,6 @@ public class Parque implements IParque {
 		// Imprimimos el estado del parque
 		imprimirInfo(puerta, "Entrada");
 
-		// TODO
-
-		// TODO
-
 	}
 
 	@Override
@@ -48,11 +44,11 @@ public class Parque implements IParque {
 		comprobarAntesDeSalir();
 
 		// Aumentamos el contador total y el individual
-		contadorPersonasTotales++;
-		contadoresPersonasPuerta.put(puerta, contadoresPersonasPuerta.get(puerta) + 1);
+		contadorPersonasTotales--;
+		contadoresPersonasPuerta.put(puerta, contadoresPersonasPuerta.get(puerta) - 1);
 
 		// Imprimimos el estado del parque
-		imprimirInfo(puerta, "Entrada");
+		imprimirInfo(puerta, "Salida");
 
 	}
 
@@ -85,16 +81,25 @@ public class Parque implements IParque {
 
 	}
 
-	protected void comprobarAntesDeEntrar() { // TODO
-		//
-		// TODO
-		//
+	protected void comprobarAntesDeEntrar() {
+		// si el parque no tiene nadie dentro tendra que esperar
+		while (contadorPersonasTotales >= 50) {
+			try {
+				wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
-	protected void comprobarAntesDeSalir() { // TODO
-		//
-		// TODO
-		//
+	protected void comprobarAntesDeSalir() {
+		while (contadorPersonasTotales <= 0) {
+			try {
+				wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 }
