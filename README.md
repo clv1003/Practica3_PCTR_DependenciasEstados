@@ -2,4 +2,4 @@
 
 Autores:
 - Jonás Martínez Sallorente
-- #claudiaPonTuNombre
+- Claudia Landeira Viñuela
