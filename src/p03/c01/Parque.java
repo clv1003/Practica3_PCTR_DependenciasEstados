@@ -31,6 +31,9 @@ public class Parque implements IParque {
 		// Imprimimos el estado del parque
 		imprimirInfo(puerta, "Entrada");
 
+		checkInvariante();
+
+		notifyAll();
 	}
 
 	@Override
@@ -50,6 +53,9 @@ public class Parque implements IParque {
 		// Imprimimos el estado del parque
 		imprimirInfo(puerta, "Salida");
 
+		checkInvariante();
+
+		notifyAll();
 	}
 
 	private void imprimirInfo(String puerta, String movimiento) {
