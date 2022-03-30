@@ -1,27 +1,36 @@
 package src.p03.c01;
 
+/*
+ * Autores: Jonás Martínez Sanllorente, Claudia Landeira Viñuela
+ * Clase: Parque
+ * Versión: 1.0
+ */
+
 import java.util.Enumeration;
 import java.util.Hashtable;
 
 public class Parque implements IParque {
 
-	// TODO
+	// Declaración de variables
 	private int contadorPersonasTotales;
 	private Hashtable<String, Integer> contadoresPersonasPuerta;
 
+	// Constructor de la clase Parque
 	public Parque() {
 		contadorPersonasTotales = 0;
 		contadoresPersonasPuerta = new Hashtable<String, Integer>();
 	}
 
+	// Método para entrar al parque
 	@Override
-	public synchronized void entrarAlParque(String puerta) { // TODO
+	public synchronized void entrarAlParque(String puerta) {
 
 		// Si no hay entradas por esa puerta, inicializamos
 		if (contadoresPersonasPuerta.get(puerta) == null) {
 			contadoresPersonasPuerta.put(puerta, 0);
 		}
 
+		// Comprueba si el parque está lleno
 		comprobarAntesDeEntrar();
 
 		// Aumentamos el contador total y el individual
@@ -31,11 +40,14 @@ public class Parque implements IParque {
 		// Imprimimos el estado del parque
 		imprimirInfo(puerta, "Entrada");
 
+		// Realiza todas las comprobaciones del método checkInvariante
 		checkInvariante();
 
+		// Permite que se ejecuten los hilos que están en espera
 		notifyAll();
 	}
 
+	// Método para salir del parque
 	@Override
 	public synchronized void salirDelParque(String puerta) {
 
@@ -44,6 +56,7 @@ public class Parque implements IParque {
 			contadoresPersonasPuerta.put(puerta, 0);
 		}
 
+		// Comprueba si el parque está vacío
 		comprobarAntesDeSalir();
 
 		// Aumentamos el contador total y el individual
@@ -53,8 +66,10 @@ public class Parque implements IParque {
 		// Imprimimos el estado del parque
 		imprimirInfo(puerta, "Salida");
 
+		// Realiza todas las comprobaciones del método checkInvariante
 		checkInvariante();
 
+		// Permite que se ejecuten los hilos que están en espera
 		notifyAll();
 	}
 
@@ -79,18 +94,21 @@ public class Parque implements IParque {
 		return sumaContadoresPuerta;
 	}
 
+	// Método que realiza una serie de comprobaciones solbre el programa
 	protected void checkInvariante() {
 		assert sumarContadoresPuerta() == contadorPersonasTotales
 				: "INV: La suma de contadores de las puertas debe ser igual al valor del contador del parte";
-		assert sumarContadoresPuerta() >= 0 
-                : "INV: La suma de contadores de las puertas debe ser un valor positivo";
-        assert sumarContadoresPuerta() <= 50 
-                : "INV: El número de personas que hay en el parque está superando el máximo disponible";
+		// Comprobamos que las personas que están en el parque no son un valor negativo
+		assert sumarContadoresPuerta() >= 0 : "INV: La suma de contadores de las puertas debe ser un valor positivo";
+		// Comprobamos que no se supera el límite de personas en el parque
+		assert sumarContadoresPuerta() <= 50
+				: "INV: El número de personas que hay en el parque está superando el máximo disponible";
 
 	}
 
+	// Método que comprueba si se puede entrar al parque
 	protected void comprobarAntesDeEntrar() {
-		// si el parque no tiene nadie dentro tendra que esperar
+		// Si el parque está lleno tendra que esperar
 		while (contadorPersonasTotales >= 50) {
 			try {
 				wait();
@@ -100,7 +118,9 @@ public class Parque implements IParque {
 		}
 	}
 
+	// Método que comprueba si se puede salir del parque
 	protected void comprobarAntesDeSalir() {
+		// Si el parque no tiene nadie dentro tendra que esperar
 		while (contadorPersonasTotales <= 0) {
 			try {
 				wait();
